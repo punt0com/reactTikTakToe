@@ -5,20 +5,22 @@ const startingBoard = [
   [null, null, null],
   [null, null, null],
 ];
-export function GameBoard() {
+export function GameBoard({ onSquareSelect, activePLayerSymbol }) {
   const [gameBoard, setGameBoard] = useState(startingBoard);
 
   function addSymbol(rowIndex, colIndex) {
     setGameBoard((prevBoard) => {
-      let updateGameBoard = { ...prevBoard };
-      updateGameBoard[rowIndex][colIndex] = "X";
+      let updateGameBoard = [...prevBoard.map((inner) => [...inner])];
+      updateGameBoard[rowIndex][colIndex] = activePLayerSymbol;
       return updateGameBoard;
     });
+
+    onSquareSelect();
   }
 
   return (
     <ol id="game-board">
-      {startingBoard.map((row, rowIndex) => {
+      {gameBoard.map((row, rowIndex) => {
         return (
           <li key={rowIndex}>
             <ol>

@@ -1,5 +1,5 @@
 import { useState } from "react";
-export function Player({ symbol, name }) {
+export function Player({ symbol, name, isActive }) {
   const [playerName, setPlayerName] = useState(name);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -17,15 +17,15 @@ export function Player({ symbol, name }) {
 
   function editBtnClicked() {
     setIsEditing((editing) => !editing);
-    
   }
+  
   //esto es un evento normal de Js
   function onUserNameChange(event) {
     setPlayerName(event.target.value);
   }
 
   return (
-    <li>
+    <li className={isActive ? "active" : undefined}>
       <span className="player">
         {userInput}
         <span className="player-symbol"> {symbol} </span>
