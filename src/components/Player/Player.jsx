@@ -5,12 +5,23 @@ export function Player({ symbol, name }) {
 
   let userInput = <span className="player-name"> {playerName} </span>;
   if (isEditing) {
-    userInput = <input type="text" required />;
+    userInput = (
+      <input
+        type="text"
+        required
+        value={playerName}
+        onChange={onUserNameChange}
+      />
+    );
   }
 
   function editBtnClicked() {
-    setIsEditing(!isEditing);
-    setPlayerName();
+    setIsEditing((editing) => !editing);
+    
+  }
+  //esto es un evento normal de Js
+  function onUserNameChange(event) {
+    setPlayerName(event.target.value);
   }
 
   return (
@@ -19,7 +30,7 @@ export function Player({ symbol, name }) {
         {userInput}
         <span className="player-symbol"> {symbol} </span>
         <button onClick={() => editBtnClicked()}>
-          {!isEditing ? "Edit" : "Save"}{" "}
+          {!isEditing ? "Edit" : "Save"}
         </button>
         ;
       </span>
