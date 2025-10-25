@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { Player } from "./components/Player/Player";
 import { GameBoard } from "./components/GameBoard/GameBoard";
 import { Logs } from "./components/Logs/Logs";
@@ -10,31 +9,37 @@ const initialBoard = [
   [null, null, null],
 ];
 
+function deriveActivePlayer(gameTurns) {
+  return gameTurns[gameTurns.length - 1]?.player === "X" ? "0" : "X";
+}
+
 function App() {
   const [gameTurns, setGameTurns] = useState([]);
-  const [activePLayer, setActivePLayer] = useState("X");
   const [gameBoard, setGameBoard] = useState(initialBoard);
 
-  function handleSelectSquare(rowIndex, colIndex) {
-    setActivePLayer((currentPLayer) => {
-      return currentPLayer === "X" ? "0" : "X";
-    });
+  const activePlayer = deriveActivePlayer(gameTurns);
 
-    setGameTurns((preTurns) => {
-      const newTurn = [...preTurns];
-      newTurn.push(
-        activePLayer +
+  function handleSelectSquare(rowIndex, colIndex) {
+    setGameTurns((prevTurns) => {
+      const lastPlayer =
+        prevTurns[prevTurns.length - 1]?.player === "X" ? "0" : "X";
+
+      const newTurn = [...prevTurns];
+      newTurn.push({
+        player: lastPlayer,
+        message:
+          lastPlayer +
           " Clicked square " +
           (rowIndex + 1) +
           "," +
-          (colIndex + 1)
-      );
+          (colIndex + 1),
+      });
       return newTurn;
     });
 
     setGameBoard((prevBoard) => {
       const updatedBoard = [...prevBoard.map((innie) => [...innie])];
-      updatedBoard[rowIndex][colIndex] = activePLayer;
+      updatedBoard[rowIndex][colIndex] = activePlayer;
       return updatedBoard;
     });
   }
@@ -47,19 +52,19 @@ function App() {
             <Player
               name="player 1"
               symbol="X"
-              isActive={activePLayer === "X"}
+              isActive={activePlayer === "X"}
             />
             <Player
               name="player 2"
               symbol="0"
-              isActive={activePLayer === "0"}
+              isActive={activePlayer === "0"}
             />
           </ol>
         </section>
         <section>
           <GameBoard
             onSquareSelect={handleSelectSquare}
-            activePLayerSymbol={activePLayer}
+            activePLayerSymbol={activePlayer}
             gameBoard={gameBoard}
           />
         </section>
