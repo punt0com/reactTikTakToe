@@ -32,7 +32,7 @@ export function Player({ symbol, name, isActive }) {
         <button onClick={() => editBtnClicked()}>
           {!isEditing ? "Edit" : "Save"}
         </button>
-        ;
+        
       </span>
     </li>
   );
